@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DragArrowlineHandler : IDragHandler
+public class ArrowlineDragHandler : IDragHandler
 {
     public void StartDrag()
     {

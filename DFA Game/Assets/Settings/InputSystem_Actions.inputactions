@@ -24,12 +24,12 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "LeftMouse",
+                    "name": "LeftMouseHold",
                     "type": "Button",
                     "id": "42488d88-552a-41f0-8fd3-5a8e8ca9965e",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Hold(duration=0.1)",
+                    "interactions": "Hold(duration=0.2)",
                     "initialStateCheck": false
                 },
                 {
@@ -226,7 +226,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "LeftMouse",
+                    "action": "LeftMouseHold",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

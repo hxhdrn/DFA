@@ -1,12 +1,16 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
+using UnityEngine.InputSystem.Interactions;
 
 public class DragManager : Singleton<DragManager>
 {
+    [SerializeField] float startDragDistance = 5f;
+
     private IDragHandler dragHandler;
     private bool dragging;
+    private bool tapStillAllowed;
 
     public void Drag(InputAction.CallbackContext cc)
     {
@@ -25,32 +29,59 @@ public class DragManager : Singleton<DragManager>
                 // instantiate selection box & get its drag handler
                 dragHandler = null;
             }
+            tapStillAllowed = true;
         }
-        else if (cc.performed)
+        if (cc.performed)
         {
-            // Start actual drag
-            if (dragHandler != null)
+            if (!dragging)
             {
-                dragging = true;
-                dragHandler.StartDrag();
+                StartDrag();
             }
         }
         else if (cc.canceled)
         {
-            dragging = false;
-            if (dragHandler != null)
+            if (dragging)
             {
-                dragHandler.StopDrag();
-                dragHandler = null;
+                dragging = false;
+                if (dragHandler != null)
+                {
+                    dragHandler.StopDrag();
+                    dragHandler = null;
+                }
             }
+            else if (tapStillAllowed)
+            {
+                if (HoverManager.Instance.CurrentItem is BackgroundHoverHandler)
+                {
+                    StateCreator.Instance.CreateState();
+                }
+            }
+        }
+    }
+
+    private void StartDrag()
+    {
+        tapStillAllowed = false;
+        // Start actual drag
+        if (dragHandler != null)
+        {
+            dragging = true;
+            dragHandler.StartDrag();
         }
     }
 
     public void MouseMoved(InputAction.CallbackContext cc)
     {
-        if (cc.performed && dragging)
+        if (cc.performed)
         {
-            dragHandler.UpdateDrag();
+            if (dragging)
+            {
+                dragHandler.UpdateDrag();
+            }
+            else if (Pointer.current.delta.ReadValue().magnitude >= startDragDistance)
+            {
+                StartDrag();
+            }
         }
     }
 }

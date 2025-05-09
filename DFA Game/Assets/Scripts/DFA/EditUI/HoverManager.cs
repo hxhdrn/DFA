@@ -1,10 +1,17 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class HoverManager : Singleton<HoverManager>
 {
     public IHoverHandler CurrentItem { get; private set; }
     public bool OnItem { get => CurrentItem != null; }
-    public Vector2 CurrentMousePos { get; private set; }
+    [SerializeField] private BackgroundHoverHandler backgroundHandler;
+
+    private void Start()
+    {
+        if (CurrentItem == null) HoverOnItem(backgroundHandler);
+    }
 
     public void HoverOnItem(IHoverHandler item)
     {
@@ -20,14 +27,18 @@ public class HoverManager : Singleton<HoverManager>
     {
         if (CurrentItem == item)
         {
-            CurrentItem.StopHover();
-            CurrentItem = null;
+            HoverOnItem(backgroundHandler);
         }
     }
 
     private void Update()
     {
-        if (CurrentItem != null)
+        if (CurrentItem == null)
+        {
+            // should never be reached!
+            Debug.LogError("Hover handler item is null");
+        }
+        else
         {
             CurrentItem.UpdateHover();
         }

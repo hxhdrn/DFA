@@ -4,8 +4,8 @@ using UnityEngine.InputSystem;
 public class PanManager : Singleton<PanManager>
 {
     private bool panningWithMouse;
-    private Vector2 startPos;
-    private Vector2 prevMousePos;
+    private Vector2 startCameraPos;
+    private Vector2 startMousePos;
 
     public void PanWithMouse(InputAction.CallbackContext cc)
     {
@@ -13,9 +13,9 @@ public class PanManager : Singleton<PanManager>
         {
             Debug.Log("Started panning");
             panningWithMouse = true;
-            startPos = Camera.main.transform.position;
-            prevMousePos = Camera.main.ScreenToWorldPoint(Pointer.current.position.ReadValue());
-            Debug.Log("Starting mouse pos: " + prevMousePos);
+            startCameraPos = Camera.main.transform.position;
+            startMousePos = Camera.main.ScreenToWorldPoint(Pointer.current.position.ReadValue());
+            Debug.Log("Starting mouse pos: " + startMousePos);
         }
         else if (cc.canceled)
         {
@@ -29,7 +29,7 @@ public class PanManager : Singleton<PanManager>
         if (cc.performed && panningWithMouse)
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(cc.ReadValue<Vector2>());
-            Vector2 mouseDelta = prevMousePos - mousePos;
+            Vector2 mouseDelta = startMousePos - mousePos;
             Camera.main.transform.Translate(mouseDelta);
         }
     }

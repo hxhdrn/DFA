@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DragArrowheadHandler : IDragHandler
+public class SelectionBoxDragHandler : IDragHandler
 {
     public void StartDrag()
     {

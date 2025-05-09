@@ -3,7 +3,7 @@ using UnityEngine;
 public class StateHoverHandler : MonoBehaviour, IDraggableHoverHandler
 {
     [SerializeField] private DFAState state;
-    [SerializeField] private DragStateHandler dragStateHandler;
+    [SerializeField] private StateDragHandler dragStateHandler;
 
     public IDragHandler GetDragHandler()
     {

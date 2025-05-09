@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class DragStateHandler : MonoBehaviour, IDragHandler
+public class StateDragHandler : MonoBehaviour, IDragHandler
 {
     private Vector2 offset;
     private Vector2 startPos;
