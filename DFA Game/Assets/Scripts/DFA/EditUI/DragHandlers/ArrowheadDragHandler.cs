@@ -34,6 +34,20 @@ public class ArrowheadDragHandler : DragHandler
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Pointer.current.position.ReadValue());
         Debug.Log("Dragging arrowhead at: " + mousePos);
-        arrowline.UpdateEndPosition(mousePos);
+        if (HoverManager.Instance.CurrentItem is StateHoverHandler stateHover)
+        {
+            if (stateHover.State == transition.OriginState)
+            {
+                arrowline.UpdateSelfCurveDirection(mousePos - (Vector2)transition.OriginState.transform.position);
+            }
+            else
+            {
+                arrowline.UpdateStatePositions(stateHover.State);
+            }
+        }
+        else
+        {
+            arrowline.UpdateEndPosition(mousePos);
+        }
     }
 }

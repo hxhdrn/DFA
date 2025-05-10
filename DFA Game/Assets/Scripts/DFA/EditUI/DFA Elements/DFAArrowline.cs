@@ -13,20 +13,31 @@ public class DFAArrowline : MonoBehaviour
     [SerializeField] private Vector2 defaultEndPos = Vector2.right * 1f;
     [SerializeField] private float defaultCurveAngle = 0f;
 
+    public Vector2 SelfCurveDirection { get; private set; }
+
     public Vector2 EndPos { get; private set; }
     public float CurveAngle { get; private set; }
 
     public void UpdateStatePositions()
     {
-        if (transition.EndState == null)
+        UpdateStatePositions(transition.EndState);
+    }
+
+    public void UpdateStatePositions(DFAState endState)
+    {
+        if (endState == null)
         {
             CurveAngle = defaultCurveAngle;
             EndPos = defaultEndPos;
             UpdateCurve();
         }
+        else if (endState == transition.OriginState)
+        {
+            UpdateSelfCurve();
+        }
         else
         {
-            EndPos = transition.EndState.transform.position - transition.OriginState.transform.position;
+            EndPos = endState.transform.position - transition.OriginState.transform.position;
             UpdateCurve();
         }
     }
@@ -41,6 +52,23 @@ public class DFAArrowline : MonoBehaviour
     {
         CurveAngle = defaultCurveAngle;
         UpdateStatePositions();
+    }
+
+    private void UpdateSelfCurve()
+    {
+        Vector2 startTangent = Quaternion.Euler(0, 0, 20) * SelfCurveDirection.normalized;
+        Vector2 endTangent = Quaternion.Euler(0, 0, -20) * SelfCurveDirection.normalized;
+
+        Vector2 startPointPos = startTangent.normalized * DFAState.StateRadius;
+        Vector2 endPointPos = endTangent.normalized * DFAState.StateRadius;
+
+        arrowhead.UpdateArrowhead(endPointPos, -endTangent.normalized);
+
+        shapeController.spline.SetPosition(0, startPointPos);
+        shapeController.spline.SetPosition(1, endPointPos);
+
+        shapeController.spline.SetRightTangent(0, startPointPos);
+        shapeController.spline.SetLeftTangent(1, endPointPos);
     }
 
     private void UpdateCurve(bool endIsDirect = false)
@@ -67,5 +95,11 @@ public class DFAArrowline : MonoBehaviour
     {
         CurveAngle = angle;
         UpdateCurve();
+    }
+
+    public void UpdateSelfCurveDirection(Vector2 direction)
+    {
+        SelfCurveDirection = direction;
+        UpdateSelfCurve();
     }
 }
