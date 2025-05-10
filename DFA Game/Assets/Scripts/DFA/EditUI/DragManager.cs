@@ -8,8 +8,8 @@ public class DragManager : Singleton<DragManager>
 {
     [SerializeField] float startDragDistance = 5f;
 
-    private IDragHandler dragHandler;
-    private bool dragging;
+    private DragHandler dragHandler;
+    public bool Dragging {get; private set;}
     private bool tapStillAllowed;
 
     public void Drag(InputAction.CallbackContext cc)
@@ -19,9 +19,9 @@ public class DragManager : Singleton<DragManager>
             // Get drag info but don't start in case it's just a click
             if (HoverManager.Instance.OnItem)
             {
-                if (HoverManager.Instance.CurrentItem is IDraggableHoverHandler dragHover)
+                if (HoverManager.Instance.CurrentItem is DraggableHoverHandler dragHover)
                 {
-                    dragHandler = dragHover.GetDragHandler();
+                    dragHandler = dragHover.DragHandler;
                 }
             }
             else
@@ -33,21 +33,16 @@ public class DragManager : Singleton<DragManager>
         }
         if (cc.performed)
         {
-            if (!dragging)
+            if (!Dragging)
             {
                 StartDrag();
             }
         }
         else if (cc.canceled)
         {
-            if (dragging)
+            if (Dragging)
             {
-                dragging = false;
-                if (dragHandler != null)
-                {
-                    dragHandler.StopDrag();
-                    dragHandler = null;
-                }
+                EndDrag();
             }
             else if (tapStillAllowed)
             {
@@ -65,8 +60,20 @@ public class DragManager : Singleton<DragManager>
         // Start actual drag
         if (dragHandler != null)
         {
-            dragging = true;
+            Dragging = true;
             dragHandler.StartDrag();
+            HoverManager.Instance.DisableHoverBehavior();
+        }
+    }
+
+    private void EndDrag()
+    {
+        Dragging = false;
+        if (dragHandler != null)
+        {
+            dragHandler.StopDrag();
+            dragHandler = null;
+            HoverManager.Instance.EnableHoverBehavior();
         }
     }
 
@@ -74,8 +81,9 @@ public class DragManager : Singleton<DragManager>
     {
         if (cc.performed)
         {
-            if (dragging)
+            if (Dragging)
             {
+                Debug.Log("Dragging " + ((MonoBehaviour)dragHandler).name);
                 dragHandler.UpdateDrag();
             }
             else if (Pointer.current.delta.ReadValue().magnitude >= startDragDistance)

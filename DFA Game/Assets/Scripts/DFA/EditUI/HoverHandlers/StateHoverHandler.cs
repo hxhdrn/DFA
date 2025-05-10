@@ -1,37 +1,21 @@
 using UnityEngine;
 
-public class StateHoverHandler : MonoBehaviour, IDraggableHoverHandler
+public class StateHoverHandler : DraggableHoverHandler
 {
     [SerializeField] private DFAState state;
-    [SerializeField] private StateDragHandler dragStateHandler;
+    public DFAState State { get => state; }
 
-    public IDragHandler GetDragHandler()
-    {
-        return dragStateHandler;
-    }
-
-    public void OnPointerEnter(UnityEngine.EventSystems.PointerEventData eventData)
-    {
-        if (eventData.pointerEnter != gameObject) return;
-        HoverManager.Instance.HoverOnItem(this);
-    }
-
-    public void OnPointerExit(UnityEngine.EventSystems.PointerEventData eventData)
-    {
-        HoverManager.Instance.EndHoverOnItem(this);
-    }
-
-    public void StartHover()
+    public override void StartHover()
     {
         // Debug.Log("Started hovering on state");
     }
 
-    public void StopHover()
+    public override void StopHover()
     {
         // Debug.Log("Stopped hovering on state");
     }
 
-    public void UpdateHover()
+    public override void UpdateHover()
     {
         // Debug.Log("Currently hovering on state");
     }

@@ -1,18 +1,18 @@
 using UnityEngine;
 
-public class SelectionBoxDragHandler : IDragHandler
+public class SelectionBoxDragHandler : DragHandler
 {
-    public void StartDrag()
+    public override void StartDrag()
     {
         throw new System.NotImplementedException();
     }
 
-    public void StopDrag()
+    public override void StopDrag()
     {
         throw new System.NotImplementedException();
     }
 
-    public void UpdateDrag()
+    public override void UpdateDrag()
     {
         throw new System.NotImplementedException();
     }

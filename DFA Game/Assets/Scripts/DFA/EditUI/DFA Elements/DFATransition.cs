@@ -22,6 +22,7 @@ public class DFATransition : MonoBehaviour
         if (OriginState.PositionTracker.PositionChanged || (EndState != null && EndState.PositionTracker.PositionChanged))
         {
             arrowline.UpdateStatePositions();
+            Debug.Log("State positions changed");
         }
     }
 }

@@ -2,34 +2,24 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
-public class BackgroundHoverHandler : MonoBehaviour, IHoverHandler
+public class BackgroundHoverHandler : HoverHandler
 {
     [SerializeField] private GameObject stateHoverPrefab;
     private GameObject hoverState;
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        Debug.LogError("Pointer cannot enter background");
-    }
-
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        Debug.LogError("Pointer cannot exit background");
-    }
-
-    public void StartHover()
+    public override void StartHover()
     {
         hoverState = Instantiate(stateHoverPrefab);
         Vector2 newPos = Camera.main.ScreenToWorldPoint(Pointer.current.position.ReadValue());
         hoverState.transform.position = newPos;
     }
 
-    public void StopHover()
+    public override void StopHover()
     {
         Destroy(hoverState);
     }
 
-    public void UpdateHover()
+    public override void UpdateHover()
     {
         Vector2 newPos = Camera.main.ScreenToWorldPoint(Pointer.current.position.ReadValue());
         hoverState.transform.position = newPos;

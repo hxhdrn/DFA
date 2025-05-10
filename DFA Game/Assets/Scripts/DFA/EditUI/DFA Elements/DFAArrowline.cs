@@ -1,5 +1,8 @@
+using NUnit;
+using System.Xml.Serialization;
 using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
+using UnityEngine.Splines;
 using UnityEngine.U2D;
 
 public class DFAArrowline : MonoBehaviour
@@ -7,7 +10,7 @@ public class DFAArrowline : MonoBehaviour
     [SerializeField] private SpriteShapeController shapeController;
     [SerializeField] private DFATransition transition;
     [SerializeField] private DFAArrowhead arrowhead;
-    [SerializeField] private Vector2 defaultEndPos = Vector2.right * 1.5f;
+    [SerializeField] private Vector2 defaultEndPos = Vector2.right * 1f;
     [SerializeField] private float defaultCurveAngle = 0f;
 
     public Vector2 EndPos { get; private set; }
@@ -19,12 +22,19 @@ public class DFAArrowline : MonoBehaviour
         {
             CurveAngle = defaultCurveAngle;
             EndPos = defaultEndPos;
+            UpdateCurve();
         }
         else
         {
             EndPos = transition.EndState.transform.position - transition.OriginState.transform.position;
+            UpdateCurve();
         }
-        UpdateCurve();
+    }
+
+    public void UpdateEndPosition(Vector2 endpoint)
+    {
+        EndPos = endpoint - (Vector2)transition.OriginState.transform.position;
+        UpdateCurve(true);
     }
 
     private void Start()
@@ -33,15 +43,15 @@ public class DFAArrowline : MonoBehaviour
         UpdateStatePositions();
     }
 
-    private void UpdateCurve()
+    private void UpdateCurve(bool endIsDirect = false)
     {
-
-
         Vector2 startTangent = Quaternion.Euler(0, 0, CurveAngle) * EndPos.normalized;
         Vector2 endTangent = Quaternion.Euler(0, 0, -CurveAngle) * -EndPos.normalized;
 
         Vector2 startPointPos = startTangent.normalized * DFAState.StateRadius;
-        Vector2 endPointPos = endTangent.normalized * DFAState.StateRadius + EndPos;
+        Vector2 endPointPos = endIsDirect ? EndPos : endTangent.normalized * DFAState.StateRadius + EndPos;
+
+        endTangent = -Vector2.Reflect(startTangent, Vector2.Perpendicular(endPointPos - startPointPos).normalized);
 
         arrowhead.UpdateArrowhead(endPointPos, -endTangent.normalized);
 

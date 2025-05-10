@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6125265728046007026}
   - component: {fileID: 4829269273833751218}
   - component: {fileID: 2045589546000726517}
+  - component: {fileID: 4348652254659568753}
   m_Layer: 0
   m_Name: State
   m_TagString: Untagged
@@ -122,8 +123,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 392d6e2b202416b41b7a3913b2d2f766, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dragHandler: {fileID: 6125265728046007026}
   state: {fileID: 4877936602016565609}
-  dragStateHandler: {fileID: 6125265728046007026}
 --- !u!114 &6125265728046007026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -184,6 +185,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a0cf0b763e0fc34e9c7e60d84e7b7c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4348652254659568753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3559200873791461749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f1375e43f4294449a73a91b7e5b9c20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverHandler: {fileID: 6400462833044664555}
 --- !u!1001 &5099922839238881981
 PrefabInstance:
   m_ObjectHideFlags: 0

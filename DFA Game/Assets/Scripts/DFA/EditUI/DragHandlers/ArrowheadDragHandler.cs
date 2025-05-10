@@ -1,19 +1,39 @@
+using UnityEditor.Rendering;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class ArrowheadDragHandler : IDragHandler
+public class ArrowheadDragHandler : DragHandler
 {
-    public void StartDrag()
+    [SerializeField] private DFAArrowline arrowline;
+    [SerializeField] private HoverDetector hoverDetector;
+    [SerializeField] private HoverDetector lineHoverDetector;
+    [SerializeField] private DFATransition transition;
+
+    public override void StartDrag()
     {
-        throw new System.NotImplementedException();
+        hoverDetector.DisableHover();
+        lineHoverDetector.DisableHover();
     }
 
-    public void StopDrag()
+    public override void StopDrag()
     {
-        throw new System.NotImplementedException();
+        if (HoverManager.Instance.CurrentItem is StateHoverHandler stateHover)
+        {
+            transition.EndState = stateHover.State;
+        }
+        else {
+            transition.EndState = null;
+        }
+
+        hoverDetector.EnableHover();
+        lineHoverDetector.EnableHover();
+        arrowline.UpdateStatePositions();
     }
 
-    public void UpdateDrag()
+    public override void UpdateDrag()
     {
-        throw new System.NotImplementedException();
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Pointer.current.position.ReadValue());
+        Debug.Log("Dragging arrowhead at: " + mousePos);
+        arrowline.UpdateEndPosition(mousePos);
     }
 }

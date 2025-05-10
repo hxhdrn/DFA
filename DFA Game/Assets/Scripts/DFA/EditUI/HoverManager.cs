@@ -4,31 +4,44 @@ using UnityEngine.InputSystem;
 
 public class HoverManager : Singleton<HoverManager>
 {
-    public IHoverHandler CurrentItem { get; private set; }
+    public HoverHandler CurrentItem { get; private set; }
     public bool OnItem { get => CurrentItem != null; }
     [SerializeField] private BackgroundHoverHandler backgroundHandler;
+    private bool hoverEnabled = true;
 
     private void Start()
     {
         if (CurrentItem == null) HoverOnItem(backgroundHandler);
     }
 
-    public void HoverOnItem(IHoverHandler item)
+    public void HoverOnItem(HoverHandler item)
     {
         if (CurrentItem != item)
         {
-            CurrentItem?.StopHover();
-            item.StartHover();
+            if (CurrentItem != null) CurrentItem.StopHover();
+            if (hoverEnabled) item.StartHover();
         }
         CurrentItem = item;
     }
 
-    public void EndHoverOnItem(IHoverHandler item)
+    public void EndHoverOnItem(HoverHandler item)
     {
         if (CurrentItem == item)
         {
             HoverOnItem(backgroundHandler);
         }
+    }
+
+    public void DisableHoverBehavior()
+    {
+        if (CurrentItem != null) CurrentItem.StopHover();
+        hoverEnabled = false;
+    }
+
+    public void EnableHoverBehavior()
+    {
+        if (CurrentItem != null) CurrentItem.StartHover();
+        hoverEnabled = true;
     }
 
     private void Update()
@@ -40,7 +53,8 @@ public class HoverManager : Singleton<HoverManager>
         }
         else
         {
-            CurrentItem.UpdateHover();
+            if (hoverEnabled) CurrentItem.UpdateHover();
+            Debug.Log("Hovering on " +  CurrentItem.name);
         }
     }
 }
