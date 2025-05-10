@@ -1,19 +1,35 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class ArrowlineDragHandler : IDragHandler
+public class ArrowlineDragHandler : MonoBehaviour, IDragHandler
 {
+    [SerializeField] private DFAArrowline arrowline;
+    [SerializeField] private DFATransition transition;
+
+    private float startAngle;
+
     public void StartDrag()
     {
-        throw new System.NotImplementedException();
+        startAngle = arrowline.CurveAngle;
     }
 
     public void StopDrag()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public void UpdateDrag()
     {
-        throw new System.NotImplementedException();
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Pointer.current.position.ReadValue());
+        DFAState closerState = transition.OriginState;
+        if (Vector2.Distance(closerState.transform.position, mousePos) < Vector2.Distance(transition.EndState.transform.position, mousePos))
+        {
+            closerState = transition.EndState;
+        }
+
+        Vector2 toMouse = mousePos - (Vector2)closerState.transform.position;
+        float newAngle = Vector2.SignedAngle(arrowline.EndPos.normalized, toMouse.normalized);
+        newAngle = Mathf.Clamp(newAngle, -90, 90);
+        arrowline.UpdateAngle(newAngle);
     }
 }

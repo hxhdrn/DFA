@@ -2,15 +2,26 @@ using UnityEngine;
 
 public class DFATransition : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    [SerializeField] DFAArrowline arrowline;
+    [SerializeField] private DFAState originState;
+    public DFAState OriginState {  get=>originState; private set=>originState = value; }
+    [SerializeField] private DFAState endState;
+    public DFAState EndState
     {
-        
+        get => endState;
+        set
+        {
+            endState = value;
+            arrowline.UpdateStatePositions();
+        }
     }
-
-    // Update is called once per frame
-    void Update()
+    [SerializeField] private string character = "x";
+    public string Character { get=>character; private set=>character = value; }
+    private void Update()
     {
-        
+        if (OriginState.PositionTracker.PositionChanged || (EndState != null && EndState.PositionTracker.PositionChanged))
+        {
+            arrowline.UpdateStatePositions();
+        }
     }
 }

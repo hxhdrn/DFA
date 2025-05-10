@@ -2,15 +2,11 @@ using UnityEngine;
 
 public class DFAArrowhead : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    DFAArrowline arrowline;
 
-    // Update is called once per frame
-    void Update()
+    public void UpdateArrowhead(Vector2 position, Vector2 direction)
     {
-        
+        transform.localPosition = position;
+        transform.rotation = Quaternion.FromToRotation(Vector2.right, direction);
     }
 }

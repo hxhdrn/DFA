@@ -12,6 +12,7 @@ public class StateHoverHandler : MonoBehaviour, IDraggableHoverHandler
 
     public void OnPointerEnter(UnityEngine.EventSystems.PointerEventData eventData)
     {
+        if (eventData.pointerEnter != gameObject) return;
         HoverManager.Instance.HoverOnItem(this);
     }
 
@@ -22,16 +23,16 @@ public class StateHoverHandler : MonoBehaviour, IDraggableHoverHandler
 
     public void StartHover()
     {
-        Debug.Log("Started hovering on state");
+        // Debug.Log("Started hovering on state");
     }
 
     public void StopHover()
     {
-        Debug.Log("Stopped hovering on state");
+        // Debug.Log("Stopped hovering on state");
     }
 
     public void UpdateHover()
     {
-        Debug.Log("Currently hovering on state");
+        // Debug.Log("Currently hovering on state");
     }
 }
