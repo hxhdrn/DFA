@@ -10,6 +10,7 @@ public class DFAArrowline : MonoBehaviour
     [SerializeField] private SpriteShapeController shapeController;
     [SerializeField] private DFATransition transition;
     [SerializeField] private DFAArrowhead arrowhead;
+    [SerializeField] private DFACharacter character;
     [SerializeField] private Vector2 defaultEndPos = Vector2.right * 1f;
     [SerializeField] private float defaultCurveAngle = 0f;
 
@@ -69,6 +70,8 @@ public class DFAArrowline : MonoBehaviour
 
         shapeController.spline.SetRightTangent(0, startPointPos);
         shapeController.spline.SetLeftTangent(1, endPointPos);
+
+        character.UpdatePosition(startPointPos, endPointPos, startPointPos);
     }
 
     private void UpdateCurve(bool endIsDirect = false)
@@ -87,8 +90,11 @@ public class DFAArrowline : MonoBehaviour
         shapeController.spline.SetPosition(1, endPointPos);
 
         float newDistance = Vector2.Distance(startPointPos, endPointPos);
-        shapeController.spline.SetRightTangent(0, .3f * newDistance * startTangent);
+        Vector2 scaledStartTangent = .3f * newDistance * startTangent;
+        shapeController.spline.SetRightTangent(0, scaledStartTangent);
         shapeController.spline.SetLeftTangent(1, .3f * newDistance * endTangent);
+
+        character.UpdatePosition(startPointPos, endPointPos, scaledStartTangent);
     }
 
     public void UpdateAngle(float angle)

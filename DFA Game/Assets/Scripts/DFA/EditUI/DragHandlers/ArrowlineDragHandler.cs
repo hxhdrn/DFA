@@ -21,19 +21,27 @@ public class ArrowlineDragHandler : DragHandler
     public override void UpdateDrag()
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Pointer.current.position.ReadValue());
-        DFAState closerState = transition.OriginState;
-        if (Vector2.Distance(closerState.transform.position, mousePos) > Vector2.Distance(transition.EndState.transform.position, mousePos))
-        {
-            closerState = transition.EndState;
-        }
 
-        Vector2 toMouse = mousePos - (Vector2)closerState.transform.position;
-        float newAngle = Vector2.SignedAngle(arrowline.EndPos.normalized, toMouse.normalized);
-        if (closerState == transition.EndState)
+        if (transition.EndState == transition.OriginState)
         {
-            newAngle = -Vector2.SignedAngle(-arrowline.EndPos.normalized, toMouse.normalized);
+            arrowline.UpdateSelfCurveDirection(mousePos - (Vector2)transition.OriginState.transform.position);
         }
-        newAngle = Mathf.Clamp(newAngle, -90, 90);
-        arrowline.UpdateAngle(newAngle);
+        else
+        {
+            DFAState closerState = transition.OriginState;
+            if (Vector2.Distance(closerState.transform.position, mousePos) > Vector2.Distance(transition.EndState.transform.position, mousePos))
+            {
+                closerState = transition.EndState;
+            }
+
+            Vector2 toMouse = mousePos - (Vector2)closerState.transform.position;
+            float newAngle = Vector2.SignedAngle(arrowline.EndPos.normalized, toMouse.normalized);
+            if (closerState == transition.EndState)
+            {
+                newAngle = -Vector2.SignedAngle(-arrowline.EndPos.normalized, toMouse.normalized);
+            }
+            newAngle = Mathf.Clamp(newAngle, -90, 90);
+            arrowline.UpdateAngle(newAngle);
+        }
     }
 }

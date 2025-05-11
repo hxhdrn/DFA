@@ -54,7 +54,7 @@ public class HoverManager : Singleton<HoverManager>
         else
         {
             if (hoverEnabled) CurrentItem.UpdateHover();
-            Debug.Log("Hovering on " +  CurrentItem.name);
+            // Debug.Log("Hovering on " +  CurrentItem.name);
         }
     }
 }

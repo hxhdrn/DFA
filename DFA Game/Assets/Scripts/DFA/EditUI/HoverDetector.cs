@@ -14,7 +14,7 @@ public class HoverDetector : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void OnPointerExit(PointerEventData eventData)
     {
         HoverManager.Instance.EndHoverOnItem(hoverHandler);
-        if (transform.IsChildOf(eventData.pointerCurrentRaycast.gameObject.transform))
+        if (eventData.pointerCurrentRaycast.gameObject != null && transform.IsChildOf(eventData.pointerCurrentRaycast.gameObject.transform))
         {
             if (eventData.pointerCurrentRaycast.gameObject.TryGetComponent<HoverDetector>(out var parentHover))
             {

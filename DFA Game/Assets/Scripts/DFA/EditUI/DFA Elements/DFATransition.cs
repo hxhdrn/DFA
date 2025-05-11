@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class DFATransition : MonoBehaviour
 {
-    [SerializeField] DFAArrowline arrowline;
+    [SerializeField] private DFAArrowline arrowline;
     [SerializeField] private DFAState originState;
+    [SerializeField] private DFACharacter character;
     public DFAState OriginState {  get=>originState; private set=>originState = value; }
     [SerializeField] private DFAState endState;
     public DFAState EndState
@@ -15,8 +16,7 @@ public class DFATransition : MonoBehaviour
             arrowline.UpdateStatePositions();
         }
     }
-    [SerializeField] private string character = "x";
-    public string Character { get=>character; private set=>character = value; }
+    public string Character { get => character.Value; }
     private void Update()
     {
         if (OriginState.PositionTracker.PositionChanged || (EndState != null && EndState.PositionTracker.PositionChanged))
