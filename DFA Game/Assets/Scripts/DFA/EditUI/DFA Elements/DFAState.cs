@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DFAState : MonoBehaviour
+public class DFAState : DFAElement
 {
     public static float StateRadius { get; private set; } = .5f;
 

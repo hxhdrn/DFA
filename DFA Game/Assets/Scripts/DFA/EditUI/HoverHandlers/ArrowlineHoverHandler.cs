@@ -3,17 +3,21 @@ using UnityEngine.EventSystems;
 
 public class ArrowlineHoverHandler : DraggableHoverHandler
 {
-    public override void StartHover()
+    [SerializeField] private ArrowheadDragHandler arrowheadDragHandler;
+    [SerializeField] private DFATransition transition;
+    public override DragHandler DragHandler => transition.EndState == null ? arrowheadDragHandler : dragHandler;
+
+    public override void StartBehavior()
     {
         
     }
 
-    public override void StopHover()
+    public override void StopBehavior()
     {
         
     }
 
-    public override void UpdateHover()
+    public override void UpdateBehavior()
     {
         
     }

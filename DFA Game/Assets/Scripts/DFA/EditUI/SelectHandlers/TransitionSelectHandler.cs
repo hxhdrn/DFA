@@ -1,12 +1,12 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class ArrowheadHoverHandler : DraggableHoverHandler
+public class TransitionSelectHandler : SelectHandler
 {
+    [SerializeField] private DFATransition transition;
 
     public override void StartBehavior()
     {
-        
+        ContextPanel.Instance.SetTransitionDisplay(transition);
     }
 
     public override void StopBehavior()

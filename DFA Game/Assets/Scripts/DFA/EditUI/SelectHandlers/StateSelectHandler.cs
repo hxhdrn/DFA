@@ -1,12 +1,12 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class ArrowheadHoverHandler : DraggableHoverHandler
+public class StateSelectHandler : SelectHandler
 {
+    [SerializeField] private DFAState state;
 
     public override void StartBehavior()
     {
-        
+        ContextPanel.Instance.SetStateDisplay(state);
     }
 
     public override void StopBehavior()

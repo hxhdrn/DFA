@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public abstract class DragHandler : MonoBehaviour
+public abstract class DragHandler : MonoBehaviour, IBehaviorHandler
 {
-    public abstract void StartDrag();
-    public abstract void UpdateDrag();
-    public abstract void StopDrag();
+    public abstract void StartBehavior();
+    public abstract void UpdateBehavior();
+    public abstract void StopBehavior();
 }

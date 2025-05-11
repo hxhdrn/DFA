@@ -9,15 +9,15 @@ public class ArrowheadDragHandler : DragHandler
     [SerializeField] private HoverDetector lineHoverDetector;
     [SerializeField] private DFATransition transition;
 
-    public override void StartDrag()
+    public override void StartBehavior()
     {
         hoverDetector.DisableHover();
         lineHoverDetector.DisableHover();
     }
 
-    public override void StopDrag()
+    public override void StopBehavior()
     {
-        if (HoverManager.Instance.CurrentItem is StateHoverHandler stateHover)
+        if (HoverManager.Instance.CurrentBehavior is StateHoverHandler stateHover)
         {
             transition.EndState = stateHover.State;
         }
@@ -30,11 +30,11 @@ public class ArrowheadDragHandler : DragHandler
         arrowline.UpdateStatePositions();
     }
 
-    public override void UpdateDrag()
+    public override void UpdateBehavior()
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Pointer.current.position.ReadValue());
         // Debug.Log("Dragging arrowhead at: " + mousePos);
-        if (HoverManager.Instance.CurrentItem is StateHoverHandler stateHover)
+        if (HoverManager.Instance.CurrentBehavior is StateHoverHandler stateHover)
         {
             if (stateHover.State == transition.OriginState)
             {

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DFATransition : MonoBehaviour
+public class DFATransition : DFAElement
 {
     [SerializeField] private DFAArrowline arrowline;
     [SerializeField] private DFAState originState;

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5734197168488841467}
   - component: {fileID: 7362648916580762221}
+  - component: {fileID: 287869735974668439}
   m_Layer: 0
   m_Name: Transition
   m_TagString: Untagged
@@ -51,6 +52,19 @@ MonoBehaviour:
   originState: {fileID: 0}
   character: {fileID: 7114482098473218326}
   endState: {fileID: 0}
+--- !u!114 &287869735974668439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1069713198824218846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75c54b8469515fb43a5aced60ecfd5fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  transition: {fileID: 7362648916580762221}
 --- !u!1 &2964620794067102494
 GameObject:
   m_ObjectHideFlags: 0
@@ -167,6 +181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16ecb19a01119ae47b2042410e8ec9b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectHandler: {fileID: 287869735974668439}
   dragHandler: {fileID: 4933259362289497232}
 --- !u!114 &4933259362289497232
 MonoBehaviour:
@@ -629,7 +644,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52940870a0254de4ebac972748060a0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectHandler: {fileID: 287869735974668439}
   dragHandler: {fileID: 186236208224270931}
+  arrowheadDragHandler: {fileID: 4933259362289497232}
+  transition: {fileID: 7362648916580762221}
 --- !u!114 &186236208224270931
 MonoBehaviour:
   m_ObjectHideFlags: 0

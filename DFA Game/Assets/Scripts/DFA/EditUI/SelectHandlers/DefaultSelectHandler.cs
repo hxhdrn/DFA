@@ -1,12 +1,10 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
-public class ArrowheadHoverHandler : DraggableHoverHandler
+public class DefaultSelectHandler : SelectHandler
 {
-
     public override void StartBehavior()
     {
-        
+        ContextPanel.Instance.SetDefaultDisplay();
     }
 
     public override void StopBehavior()

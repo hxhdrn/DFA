@@ -8,17 +8,17 @@ public class ArrowlineDragHandler : DragHandler
 
     private float startAngle;
 
-    public override void StartDrag()
+    public override void StartBehavior()
     {
         startAngle = arrowline.CurveAngle;
     }
 
-    public override void StopDrag()
+    public override void StopBehavior()
     {
         
     }
 
-    public override void UpdateDrag()
+    public override void UpdateBehavior()
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Pointer.current.position.ReadValue());
 

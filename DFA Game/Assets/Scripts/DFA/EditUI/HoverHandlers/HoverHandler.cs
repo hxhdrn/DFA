@@ -1,9 +1,12 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public abstract class HoverHandler : MonoBehaviour
+public abstract class HoverHandler : MonoBehaviour, IBehaviorHandler
 {
-    public abstract void StartHover();
-    public abstract void StopHover();
-    public abstract void UpdateHover();
+    [SerializeField] protected SelectHandler selectHandler;
+    public virtual SelectHandler SelectHandler { get => selectHandler; }
+
+    public abstract void StartBehavior();
+    public abstract void StopBehavior();
+    public abstract void UpdateBehavior();
 }
