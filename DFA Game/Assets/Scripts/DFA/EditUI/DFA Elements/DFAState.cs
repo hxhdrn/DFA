@@ -5,8 +5,8 @@ public class DFAState : DFAElement
 {
     public static float StateRadius { get; private set; } = .5f;
 
-    private string label;
-    private bool isAccepting;
+    public string Label { get; set; }
+    public bool IsAccepting { get; set; }
 
     [SerializeField] private PositionTracker positionTracker;
     public PositionTracker PositionTracker { get => positionTracker; }
@@ -22,5 +22,10 @@ public class DFAState : DFAElement
         {
             transitions.Add(t.Character, t);
         }
+    }
+
+    public DFATransition GetTransition(string character)
+    {
+        return transitions[character];
     }
 }

@@ -37,11 +37,11 @@ public class ClickManager : MonoBehaviour
             }
             else if (startedClickInteraction)
             {
-                if (HoverManager.Instance.DefaultBehaviorSelected)
+                if (HoverManager.Instance.DefaultBehaviorSelected && HoverManager.Instance.BehaviorEnabled)
                 {
                     DFAState newState = StateCreator.Instance.CreateState();
                 }
-                else
+                else if (HoverManager.Instance.CurrentBehavior != null && HoverManager.Instance.BehaviorEnabled)
                 {
                     SelectHandler newSelection = HoverManager.Instance.CurrentBehavior.SelectHandler;
                     if (SelectionManager.Instance.CurrentBehavior == newSelection)
