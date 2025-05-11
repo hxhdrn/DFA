@@ -17,12 +17,13 @@ public class DFATransition : MonoBehaviour
         }
     }
     public string Character { get => character.Value; }
+
     private void Update()
     {
         if (OriginState.PositionTracker.PositionChanged || (EndState != null && EndState.PositionTracker.PositionChanged))
         {
             arrowline.UpdateStatePositions();
-            Debug.Log("State positions changed");
+            // Debug.Log("State positions changed");
         }
     }
 }

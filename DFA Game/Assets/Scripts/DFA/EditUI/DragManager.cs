@@ -83,7 +83,7 @@ public class DragManager : Singleton<DragManager>
         {
             if (Dragging)
             {
-                Debug.Log("Dragging " + ((MonoBehaviour)dragHandler).name);
+                // Debug.Log("Dragging " + ((MonoBehaviour)dragHandler).name);
                 dragHandler.UpdateDrag();
             }
             else if (Pointer.current.delta.ReadValue().magnitude >= startDragDistance)

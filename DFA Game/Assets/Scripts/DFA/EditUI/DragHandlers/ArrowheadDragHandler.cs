@@ -33,7 +33,7 @@ public class ArrowheadDragHandler : DragHandler
     public override void UpdateDrag()
     {
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Pointer.current.position.ReadValue());
-        Debug.Log("Dragging arrowhead at: " + mousePos);
+        // Debug.Log("Dragging arrowhead at: " + mousePos);
         if (HoverManager.Instance.CurrentItem is StateHoverHandler stateHover)
         {
             if (stateHover.State == transition.OriginState)

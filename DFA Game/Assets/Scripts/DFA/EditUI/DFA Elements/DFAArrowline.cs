@@ -71,7 +71,7 @@ public class DFAArrowline : MonoBehaviour
         shapeController.spline.SetRightTangent(0, startPointPos);
         shapeController.spline.SetLeftTangent(1, endPointPos);
 
-        character.UpdatePosition(startPointPos, endPointPos, startPointPos);
+        character.UpdatePosition();
     }
 
     private void UpdateCurve(bool endIsDirect = false)
@@ -94,7 +94,22 @@ public class DFAArrowline : MonoBehaviour
         shapeController.spline.SetRightTangent(0, scaledStartTangent);
         shapeController.spline.SetLeftTangent(1, .3f * newDistance * endTangent);
 
-        character.UpdatePosition(startPointPos, endPointPos, scaledStartTangent);
+        character.UpdatePosition();
+    }
+
+    public Vector2 GetCharacterPosition()
+    {
+        Vector2 startPointPos = shapeController.spline.GetPosition(0);
+        Vector2 endPointPos = shapeController.spline.GetPosition(1);
+        Vector2 tangent = shapeController.spline.GetRightTangent(0);
+        Vector2 startToEnd = endPointPos - startPointPos;
+        Vector2 tangentInContext = Quaternion.FromToRotation(startToEnd.normalized, Vector2.right) * tangent;
+        Vector2 halfway = startToEnd / 2;
+        Vector2 perp = Vector2.Perpendicular(startToEnd).normalized;
+        Vector2 scaledPerp = perp * tangentInContext.y;
+        Vector2 offset = .2f * (tangentInContext.y < 0 ? -perp : perp);
+        Vector2 worldPos = (Vector2)transition.OriginState.transform.position + startPointPos + halfway + scaledPerp * .75f + offset;
+        return worldPos;
     }
 
     public void UpdateAngle(float angle)
