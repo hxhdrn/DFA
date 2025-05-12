@@ -44,6 +44,7 @@ public class DFAState : DFAElement
     [SerializeField] private DFATransition[] transitionInput;
 
     private Dictionary<string, DFATransition> transitions;
+    private HashSet<DFATransition> transitionsToward;
 
     private void Start()
     {
@@ -52,10 +53,30 @@ public class DFAState : DFAElement
         {
             transitions.Add(t.Character, t);
         }
+        transitionsToward = new HashSet<DFATransition>();
     }
 
     public DFATransition GetTransition(string character)
     {
         return transitions[character];
+    }
+
+    public void AddTransitionToward(DFATransition transition)
+    {
+        transitionsToward.Add(transition);
+    }
+
+    public void RemoveTransitionToward(DFATransition transition)
+    {
+        transitionsToward.Remove(transition);
+    }
+
+    public void DeleteState()
+    {
+        foreach (DFATransition t in transitionsToward)
+        {
+            t.EndState = null;
+        }
+        Destroy(gameObject);
     }
 }

@@ -5,12 +5,12 @@ public class DFACharacter : MonoBehaviour
 {
     [SerializeField] private string value;
     public string Value { get=>value; private set=>this.value = value; }
-    [SerializeField] private TextMeshProUGUI textComponent;
+    [SerializeField] private TextMeshPro textComponent;
     [SerializeField] private DFAArrowline arrowline;
 
     private void Start()
     {
-        CharacterManager.Instance.SetCharacterParent(this);
+        // CharacterManager.Instance.SetCharacterParent(this);
         textComponent.text = value;
     }
 

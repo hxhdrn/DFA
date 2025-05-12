@@ -22,7 +22,7 @@ public class PanHandler : MonoBehaviour, IBehaviorHandler
         if (mouseDelta != Vector2.zero)
         {
             Camera.main.transform.Translate(mouseDelta);
-            CharacterManager.Instance.TranslateAllCharacters(-mouseDelta);
+            // CharacterManager.Instance.TranslateAllCharacters(-mouseDelta);
         }
     }
 }

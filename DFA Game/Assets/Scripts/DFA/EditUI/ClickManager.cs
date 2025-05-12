@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class ClickManager : MonoBehaviour
 {
     private bool startedClickInteraction;
+    private bool startedRightClickInteraction;
     [SerializeField] float startDragDistance = 5f;
     private DragHandler dragHandler;
     public void Click(InputAction.CallbackContext cc)
@@ -60,14 +61,45 @@ public class ClickManager : MonoBehaviour
 
     public void RightClick(InputAction.CallbackContext cc)
     {
-        if (cc.performed && PanManager.Instance.BehaviorChangeEnabled)
+        if (cc.started)
+        {
+            startedRightClickInteraction = true;
+        }
+        else if (cc.performed)
+        {
+            StartPan();
+        }
+        else if (cc.canceled)
+        {
+            if (!PanManager.Instance.DefaultBehaviorSelected)
+            {
+                EndPan();
+            }
+            else if (startedRightClickInteraction)
+            {
+                if (HoverManager.Instance.CurrentBehavior is StateHoverHandler stateHover)
+                {
+                    Destroy(stateHover.State.gameObject);
+                }
+            }
+        }
+    }
+
+    private void StartPan()
+    {
+        startedRightClickInteraction = false;
+        if (PanManager.Instance.BehaviorChangeEnabled)
         {
             PanManager.Instance.SelectPanBehavior();
             HoverManager.Instance.DisableBehavior();
             DragManager.Instance.DisableBehavior();
             DragManager.Instance.BehaviorChangeEnabled = false;
         }
-        else if (cc.canceled && PanManager.Instance.BehaviorChangeEnabled)
+    }
+
+    private void EndPan()
+    {
+        if (PanManager.Instance.BehaviorChangeEnabled)
         {
             PanManager.Instance.SelectDefaultBehavior();
             HoverManager.Instance.EnableBehavior();

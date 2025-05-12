@@ -27,7 +27,7 @@ public class ArrowheadDragHandler : DragHandler
 
         hoverDetector.EnableHover();
         lineHoverDetector.EnableHover();
-        arrowline.UpdateStatePositions();
+        // arrowline.UpdateStatePositions();
     }
 
     public override void UpdateBehavior()

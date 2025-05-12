@@ -12,11 +12,21 @@ public class DFATransition : DFAElement
         get => endState;
         set
         {
+            if (endState != null) endState.RemoveTransitionToward(this);
             endState = value;
+            if (endState != null) endState.AddTransitionToward(this);
             arrowline.UpdateStatePositions();
         }
     }
     public string Character { get => character.Value; }
+
+    private void Start()
+    {
+        if (endState != null)
+        {
+            endState.AddTransitionToward(this);
+        }
+    }
 
     private void Update()
     {
