@@ -8,7 +8,7 @@ public class RunManager : Singleton<RunManager>
     public string RunningString { get; set; } = "";
     public bool IsRunning { get; private set; } = false;
     public float StepTime { get; set; } = .5f;
-    public float Paused { get; private set; }
+    public bool Paused { get; private set; }
     public DFAState CurrentState { get; private set; }
 
     private int placeInString = 0;
@@ -17,44 +17,134 @@ public class RunManager : Singleton<RunManager>
     [SerializeField] private Image playButtonIcon;
     [SerializeField] private Sprite playIcon;
     [SerializeField] private Sprite pauseIcon;
+    [SerializeField] private Button playButton;
     [SerializeField] private Button stopButton;
     [SerializeField] private Button stepButton;
 
-    public void RunDFA()
+    public void FinishedRunning(bool accepted)
+    {
+        Debug.Log("Ended run: string " + accepted);
+
+        ExitPlayMode();
+    }
+
+    public void EnterPlayMode()
     {
         IsRunning = true;
         placeInString = 0;
         CurrentState = DFAStartStateMarker.Instance.StartState;
-        playButtonIcon.sprite = pauseIcon;
         stopButton.interactable = true;
         stepButton.interactable = false;
-        runningCoroutine = StartCoroutine(RunCoroutine());
     }
 
-    public void FinishedRunning(bool accepted)
+    private void ExitPlayMode()
     {
         IsRunning = false;
-        Debug.Log("Ended run: string " + accepted);
-
         playButtonIcon.sprite = playIcon;
         stopButton.interactable = false;
         stepButton.interactable = true;
+        playButton.interactable = true;
     }
 
     private IEnumerator RunCoroutine()
     {
         yield return new WaitForSeconds(StepTime);
+        if (Paused)
+        {
+            stepButton.interactable = true;
+            playButtonIcon.sprite = playIcon;
+            playButton.interactable = true;
+        }
+        else if (IsRunning)
+        {
+            Step();
+            if (IsRunning)
+            {
+                runningCoroutine = StartCoroutine(RunCoroutine());
+            }
+        }
+    }
+
+    public void TogglePause()
+    {
+        if (!IsRunning)
+        {
+            EnterPlayMode();
+            PlayDFA();
+        }
+        else if (Paused)
+        {
+            PlayDFA();
+        }
+        else
+        {
+            PauseDFA();
+        }
+    }
+
+    private IEnumerator StepCoroutine()
+    {
+        yield return new WaitForSeconds(StepTime);
+        if (IsRunning)
+        {
+            Step();
+            FinishStep();
+        }
+    }
+
+    public void StepDFA()
+    {
+        if (!IsRunning)
+        {
+            EnterPlayMode();
+        }
+        stepButton.interactable = false;
+        playButton.interactable = false;
+        runningCoroutine = StartCoroutine(StepCoroutine());
+    }
+
+    private void FinishStep()
+    {
+        if (IsRunning)
+        {
+            stepButton.interactable = true;
+            playButton.interactable = true;
+        }
+    }
+
+    public void StopDFA()
+    {
+        ExitPlayMode();
+    }
+
+    public void PauseDFA()
+    {
+        playButton.interactable = false;
+        Paused = true;
+    }
+
+    public void PlayDFA()
+    {
+        Paused = false;
+        playButtonIcon.sprite = pauseIcon;
+        stepButton.interactable = false;
+        stopButton.interactable = true;
+        runningCoroutine = StartCoroutine(RunCoroutine());
+    }
+
+    private void Step()
+    {
         if (placeInString < RunningString.Length)
         {
-            bool continuing = Step();
-            if (continuing)
+            DFATransition transition = CurrentState.GetTransition("" + RunningString[placeInString]);
+            if (transition.EndState == null)
             {
-                placeInString++;
-                runningCoroutine = StartCoroutine(RunCoroutine());
+                FinishedRunning(false);
             }
             else
             {
-                FinishedRunning(false);
+                CurrentState = transition.EndState;
+                placeInString++;
             }
         }
         else
@@ -62,18 +152,5 @@ public class RunManager : Singleton<RunManager>
             // reached end of string
             FinishedRunning(CurrentState.IsAccepting);
         }
-    }
-
-    private bool Step()
-    {
-        DFATransition transition = CurrentState.GetTransition("" + RunningString[placeInString]);
-
-        if (transition.EndState == null)
-        {
-            return false;
-        }
-
-        CurrentState = transition.EndState;
-        return true;
     }
 }
