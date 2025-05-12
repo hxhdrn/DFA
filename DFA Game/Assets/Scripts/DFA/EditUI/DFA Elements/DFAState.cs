@@ -1,12 +1,32 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class DFAState : DFAElement
 {
     public static float StateRadius { get; private set; } = .5f;
+    [SerializeField] private SpriteRenderer spriteRenderer;
+    [SerializeField] private Sprite defaultSprite;
+    [SerializeField] private Sprite acceptingSprite;
 
     public string Label { get; set; }
-    public bool IsAccepting { get; set; }
+    private bool isAccepting;
+    public bool IsAccepting
+    {
+        get => isAccepting;
+        set
+        {
+            isAccepting = value;
+            if (value)
+            {
+                spriteRenderer.sprite = acceptingSprite;
+            }
+            else
+            {
+                spriteRenderer.sprite = defaultSprite;
+            }
+        }
+    }
 
     [SerializeField] private PositionTracker positionTracker;
     public PositionTracker PositionTracker { get => positionTracker; }
