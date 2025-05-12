@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: d02ed152547963043baab91d695f6701
+guid: dcbf7b79f0ecf034298a277f3f449c56
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1528092665651153563
-    second: stop_300dp_FFFFFF_FILL1_wght400_GRAD0_opsz48_0
+      213: 2243962794048994913
+    second: pause_300dp_FFFFFF_FILL1_wght400_GRAD200_opsz48_0
+  - first:
+      213: 5543822658296328952
+    second: pause_300dp_FFFFFF_FILL1_wght400_GRAD200_opsz48_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +116,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: stop_300dp_FFFFFF_FILL1_wght400_GRAD0_opsz48_0
+      name: pause_300dp_FFFFFF_FILL1_wght400_GRAD200_opsz48_0
       rect:
         serializedVersion: 2
-        x: 62
-        y: 62
-        width: 177
-        height: 177
+        x: 57
+        y: 57
+        width: 187
+        height: 187
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +131,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 565bbf711df1bcae0800000000000000
-      internalID: -1528092665651153563
+      spriteID: 16ebb7ca548242f10800000000000000
+      internalID: 2243962794048994913
       vertices: []
       indices: 
       edges: []
@@ -138,7 +141,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 59ad13a474a59614c9890f8a8044564e
+    spriteID: 17ac2de327d156a41878f8622750baf4
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +151,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      stop_300dp_FFFFFF_FILL1_wght400_GRAD0_opsz48_0: -1528092665651153563
+      pause_300dp_FFFFFF_FILL1_wght400_GRAD200_opsz48_0: 2243962794048994913
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

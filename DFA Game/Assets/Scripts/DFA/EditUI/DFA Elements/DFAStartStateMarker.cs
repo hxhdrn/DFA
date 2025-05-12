@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
-public class DFAStartStateMarker : MonoBehaviour
+public class DFAStartStateMarker : Singleton<DFAStartStateMarker>
 {
     [SerializeField] private DFAState startState;
     public DFAState StartState
