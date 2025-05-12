@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 
@@ -8,8 +9,17 @@ public class DFAState : DFAElement
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Sprite defaultSprite;
     [SerializeField] private Sprite acceptingSprite;
-
-    public string Label { get; set; }
+    [SerializeField] private TextMeshPro labelText;
+    private string label;
+    public string Label
+    { 
+        get => label;
+        set
+        {
+            label = value;
+            labelText.text = label;
+        }
+    }
     private bool isAccepting;
     public bool IsAccepting
     {

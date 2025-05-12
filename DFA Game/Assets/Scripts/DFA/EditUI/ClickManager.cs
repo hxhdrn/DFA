@@ -11,7 +11,7 @@ public class ClickManager : MonoBehaviour
         if (cc.started)
         {
             // Get drag info but don't start in case it's just a click
-            if (!HoverManager.Instance.DefaultBehaviorSelected)
+            if (!HoverManager.Instance.DefaultBehaviorSelected && DragManager.Instance.BehaviorChangeEnabled)
             {
                 if (HoverManager.Instance.CurrentBehavior is DraggableHoverHandler dragHover)
                 {
