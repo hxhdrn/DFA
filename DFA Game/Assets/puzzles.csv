@@ -1,0 +1,21 @@
+﻿id,title,description,completed,unlocks
+aba,Starting off,Accept only the string aba,false,bba
+bba,Do it again,Accept only the string bba,false,both
+both,Both,Accept aba and bba,false,as atleast
+as,All A's,Accept strings that only have a's,false,everything
+atleast,At least one A,Accept strings with at least one a,false
+everything,Everything,Accept all strings,false,abs athenb
+abs,AB's,Accept strings that consist entirely of ab's,false,prefix
+athenb,A's then B's,Accept strings that consist of any positive number of a's then any positive number of b's,false,even
+even,Even,Accept even length strings,false,evenB
+evenB,Even B's,Accept strings with an even number of b's,false,oddeven div3
+oddeven,Odds and evens,Accept strings with an odd number of a's and an even number of b's,false
+div3,Divisible by 3,Accept strings with length divisible by 3,false,mod3 evenordiv3
+mod3,Mod 3,Accept strings with length equivalent to 1 mod 3,false
+evenordiv3,2s and 3s,Accept strings divisible by either 2 or 3,false
+prefix,Prefix,Accepts strings that start with aba,false,substring negation
+substring,Substring,Accept strings that have aba in them somewhere,false,suffix
+suffix,Suffix,Accept strings that end with aba,false,subsequence challenge
+subsequence,Subsequence,Accept strings that have a then b then a in them (letters in between are allowed),false
+negation,Prefix Negation,Accept strings that do NOT start with aba,false
+challenge,Challenge,Accept strings that have the same number of ab's and ba's (overlaps are allowed),false

@@ -46,14 +46,14 @@ public class DFAState : DFAElement
     private Dictionary<string, DFATransition> transitions;
     private HashSet<DFATransition> transitionsToward;
 
-    private void Start()
+    private void Awake()
     {
+        transitionsToward = new HashSet<DFATransition>();
         transitions = new Dictionary<string, DFATransition>();
         foreach (DFATransition t in transitionInput)
         {
             transitions.Add(t.Character, t);
         }
-        transitionsToward = new HashSet<DFATransition>();
     }
 
     public DFATransition GetTransition(string character)

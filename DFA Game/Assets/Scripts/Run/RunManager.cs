@@ -7,12 +7,17 @@ public class RunManager : Singleton<RunManager>
 {
     public string RunningString { get; set; } = "";
     public bool IsRunning { get; private set; } = false;
-    public float StepTime { get; set; } = .5f;
+    public float StepTime { get; set; } = 2f;
     public bool Paused { get; private set; }
     public DFAState CurrentState { get; private set; }
 
-    private int placeInString = 0;
+    public int PlaceInString { get; private set; } = 0;
     private Coroutine runningCoroutine;
+    public PuzzleData.TestString[] TestList { get; private set; }
+    private int placeInList;
+    public bool InTestMode { get; private set; }
+    private bool allPassed = true;
+    private bool gotResult = false;
 
     [SerializeField] private Image playButtonIcon;
     [SerializeField] private Sprite playIcon;
@@ -23,16 +28,66 @@ public class RunManager : Singleton<RunManager>
 
     public void FinishedRunning(bool accepted)
     {
-        Debug.Log("Ended run: string " + accepted);
+        Debug.Log("place in list " + placeInList);
+        bool result = accepted == TestList[placeInList].shouldAccept;
+        allPassed &= result;
+        ResultManager.Instance.UpdateResult(accepted, RunningString, TestList[placeInList].shouldAccept);
+        Debug.Log("Ended run:" + RunningString + (accepted ? " accepted" : " rejected") + " (" + (result ? "passed" : "failed") + ")");
 
-        ExitPlayMode();
+        placeInList++;
+        if (IsRunning && placeInList < TestList.Length)
+        {
+            ResetPlayMode();
+        }
+        else
+        {
+            if (!InTestMode)
+            {
+                ResultManager.Instance.UpdateTotalResult(allPassed);
+                if (allPassed)
+                {
+                    PuzzleManager.Instance.Completed = true;
+                }
+            }
+            ExitPlayMode();
+        }
+    }
+
+    public void DisplayResult()
+    {
+
+    }
+
+    public void SetTestMode(string testString, bool shouldBeAccepted)
+    {
+        InTestMode = true;
+        TestList = new PuzzleData.TestString[] { new(testString, shouldBeAccepted) };
+    }
+
+    public void SetSubmitMode()
+    {
+        InTestMode = false;
+        TestList = PuzzleManager.Instance.GetTestStrings();
     }
 
     public void EnterPlayMode()
     {
         IsRunning = true;
-        placeInString = 0;
+        allPassed = true;
+        placeInList = 0;
+        StepTime = 1.5f;
+        RunSettings.Instance.DisableAll();
+        ResetPlayMode();
+    }
+
+    private void ResetPlayMode()
+    {
+        RunningString = TestList[placeInList].testString;
+        Debug.Log("Testing " + RunningString);
+        PlaceInString = 0;
         CurrentState = DFAStartStateMarker.Instance.StartState;
+        StringManager.Instance.UpdateString();
+        StringManager.Instance.EnableString();
         stopButton.interactable = true;
         stepButton.interactable = false;
     }
@@ -41,26 +96,27 @@ public class RunManager : Singleton<RunManager>
     {
         IsRunning = false;
         playButtonIcon.sprite = playIcon;
+        StringManager.Instance.DisableString();
         stopButton.interactable = false;
         stepButton.interactable = true;
         playButton.interactable = true;
+        RunSettings.Instance.EnableAll();
     }
 
     private IEnumerator RunCoroutine()
     {
-        yield return new WaitForSeconds(StepTime);
-        if (Paused)
+        while (IsRunning)
         {
-            stepButton.interactable = true;
-            playButtonIcon.sprite = playIcon;
-            playButton.interactable = true;
-        }
-        else if (IsRunning)
-        {
-            Step();
-            if (IsRunning)
+            yield return new WaitForSeconds(StepTime);
+            if (Paused)
             {
-                runningCoroutine = StartCoroutine(RunCoroutine());
+                stepButton.interactable = true;
+                playButtonIcon.sprite = playIcon;
+                playButton.interactable = true;
+            }
+            else
+            {
+                Step();
             }
         }
     }
@@ -132,11 +188,26 @@ public class RunManager : Singleton<RunManager>
         runningCoroutine = StartCoroutine(RunCoroutine());
     }
 
+    public void SkipDFA()
+    {
+        if (!IsRunning)
+        {
+            EnterPlayMode();
+        }
+        PauseDFA();
+        while (IsRunning)
+        {
+            Step();
+        }
+    }
+
     private void Step()
     {
-        if (placeInString < RunningString.Length)
+        if (PlaceInString < RunningString.Length)
         {
-            DFATransition transition = CurrentState.GetTransition("" + RunningString[placeInString]);
+            Debug.Log("Stepping at " + PlaceInString + ": " + RunningString[PlaceInString]);
+            DFATransition transition = CurrentState.GetTransition("" + RunningString[PlaceInString]);
+
             if (transition.EndState == null)
             {
                 FinishedRunning(false);
@@ -144,7 +215,8 @@ public class RunManager : Singleton<RunManager>
             else
             {
                 CurrentState = transition.EndState;
-                placeInString++;
+                PlaceInString++;
+                StringManager.Instance.UpdateString();
             }
         }
         else
